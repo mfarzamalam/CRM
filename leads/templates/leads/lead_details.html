@@ -7,13 +7,13 @@
     <title>This is a lead detail Page</title>
 </head>
 <body>
-        <a href="/leads/"> < </a>
-        <hr>
-        {% for lead in lead %}
-            <h1>Complete detail of {{lead.first_name}} {{lead.last_name}} </h1>
-            <p>Age: {{lead.age}} </p>
-            <p>Agent Email: {{lead.agent}} </p>
-        {% endfor %}
+    <a href="/leads/"> < </a> 
+    <hr>
+    {% for lead in lead %}
+        <h1>Complete detail of {{lead.first_name}} {{lead.last_name}} </h1> <span> <a href="{% url 'leads:update' lead.pk %} "> EDIT</a> </span>
+        <p>Age: {{lead.age}} </p>
+        <p>Agent Email: {{lead.agent}} </p>
+    {% endfor %}
 
 </body>
-</html>
+</html> 

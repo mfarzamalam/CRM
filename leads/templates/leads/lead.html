@@ -11,7 +11,10 @@
         <h1>All The Leads Below</h1>
         
         {% for lead in leads %}
-           {{forloop.counter}}) <a href="/leads/detail/{{lead.id}} "> {{lead.first_name}} </a><br><br>
+           {{forloop.counter}}) <a href="/leads/detail/{{lead.id}} "> {{lead.first_name}} </a> <br>
+            <a href="{% url 'leads:update' lead.id %}">Edit</a>
+            <a href="{% url 'leads:delete' lead.id %}">Delete</a>
+            <br><br>
         {% endfor %}
 
         <a href="/leads/create">Create New Leads</a>
