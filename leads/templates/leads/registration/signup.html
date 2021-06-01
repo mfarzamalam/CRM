@@ -2,11 +2,11 @@
 
 {% block main %}
 
-        <h1>Are You Sure?</h1>
+    <h1>Create New Account</h1>
         <form action="" method="post">
             {% csrf_token %}
             {{form.as_p}}
-            <button type="submit"> Submit</button>
+            <button type="submit"> Sign up</button>
         </form>
 
 {% endblock main %}
