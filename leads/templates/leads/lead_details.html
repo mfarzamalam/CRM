@@ -2,10 +2,10 @@
 
 {% block main %}
 
-    {% comment %} {% for lead in leads %} {% endcomment %}
-        <h1>Complete detail of {{lead.first_name}} {{lead.last_name}} </h1> <span> <a href="{% url 'leads:update' lead.pk %} "> EDIT</a> </span>
+    {% for lead in leads %}
+        <h1>Complete detail of {{lead.first_name}} {{lead.last_name}} </h1> <span> 
         <p>Age: {{lead.age}} </p>
         <p>Agent Email: {{lead.agent}} </p>
-    {% comment %} {% endfor %} {% endcomment %}
+    {% endfor %}
 
 {% endblock main %}

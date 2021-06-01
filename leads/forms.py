@@ -8,10 +8,6 @@ class LeadForm(forms.Form):
     last_name  = forms.CharField()
     age        = forms.IntegerField()
 
-class LeadModelForm(forms.ModelForm):
-    class Meta:
-        model = Lead
-        fields = '__all__'
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
