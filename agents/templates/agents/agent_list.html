@@ -1,0 +1,14 @@
+{% extends 'leads/base.html' %}
+
+{% block main %}
+
+    {% for agent in agents %}
+           {{forloop.counter}}) <a href="{% url 'agents:detail' agent.id %}"> {{agent.user}} </a> <br>
+            <a href="{% url 'agents:update' agent.id %}">Edit</a>
+            <a href="{% url 'agents:delete' agent.id %}">Delete</a>
+            <br><br>
+        {% endfor %}
+
+        <a href="{% url 'agents:create' %}">Create New Agent</a>
+
+{% endblock main %}
