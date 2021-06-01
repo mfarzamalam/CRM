@@ -10,6 +10,8 @@
 
     {% if user.is_authenticated %}
         <a href="{% url 'leads:list' %}">View all the leads</a>
+        <br>
+        <a href="{% url 'agents:list' %}">View all the Agents</a>
     {% endif %}
 
 {% endblock main %}

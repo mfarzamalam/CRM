@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect, reverse
-from .models import Lead, Agent, User
+from .models import Lead, User
 from .forms import LeadModelForm, CustomUserCreationForm
 from django.views.generic import TemplateView, DetailView, ListView, UpdateView, DeleteView, CreateView
 
