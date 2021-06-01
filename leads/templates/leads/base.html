@@ -10,13 +10,13 @@
         <a href="{% url 'home' %}"> < </a>
         <div style="float: right; padding-right:50px">
             {% if not user.is_authenticated %}
-                <a href="">login</a>
-                <a href="">Signup</a>
+                <a href="{% url 'login' %}">login</a>
+                <a href="{% url 'signup' %}">signup</a>
             {% endif %}
             
             {% if user.is_authenticated %}
-                <a>Welcome {{user.username}} - </a>
-                <a href="" style="padding-left:20px">logout</a>
+                <a>Welcome {{user.username}}</a>
+                <a href="{% url 'logout' %}" style="padding-left:20px">logout</a>
             {% endif %}
 
         </div>
