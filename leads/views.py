@@ -2,12 +2,20 @@ from django.shortcuts import render, HttpResponse, redirect, reverse
 from .models import Lead, User, Agent
 from .forms import LeadForm, CustomUserCreationForm
 from django.views.generic import TemplateView, CreateView
+from agents.mixin import OrganisorAndLoginRequiredMixin
 ################################
 def lead_list(request):
-    leads = Lead.objects.all()
+    if request.user.is_organisor:
+        leads = Lead.objects.filter(organisation=request.user.userprofile, agent__isnull=False)
+        unassigned_leads = Lead.objects.filter(organisation=request.user.userprofile, agent__isnull=True)
+        # print(unassigned_leads.count())
+        context = {'leads':leads, 'unassigned_leads':unassigned_leads}
+    else:
+        leads = Lead.objects.filter(organisation=request.user.agent.organisation, agent__isnull=False)
+        context = {'leads':leads}
 
-    context = {'leads':leads}
     return render(request, 'leads/lead_list.html', context)
+
 
 
 class LandingPageView(TemplateView):
@@ -24,21 +32,24 @@ def lead_detail(request, pk):
 
 ###############################
 def create_lead(request):
-    if request.method == "POST":
-        form = LeadForm(request.POST)
-        if form.is_valid():
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            age = form.cleaned_data['age']
-            agent = Agent.objects.first()
-            Lead.objects.create(first_name=first_name, last_name=last_name, age=age, agent=agent)
-            return redirect('leads:list')
+    if request.user.is_organisor:
+        if request.method == "POST":
+            form = LeadForm(request.POST)
+            if form.is_valid():
+                first_name = form.cleaned_data['first_name']
+                last_name = form.cleaned_data['last_name']
+                age = form.cleaned_data['age']
+                agent = Agent.objects.first()
+                organisation = request.user.userprofile
+                Lead.objects.create(first_name=first_name, last_name=last_name, age=age, agent=agent, organisation=organisation)
+                return redirect('leads:list')
+        else:
+            form = LeadForm()
+
+        context = {'form':form}
+        return render(request, 'leads/create_lead.html', context)
     else:
-        form = LeadForm()
-
-    context = {'form':form}
-    return render(request, 'leads/create_lead.html', context)
-
+        return redirect('leads:list')
 
 ##################################
 def update_lead(request, pk):

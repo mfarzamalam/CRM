@@ -3,7 +3,8 @@
 {% block main %}
 
     <h1>All The Leads Below</h1>
-        
+        <h3>Assign Leads</h3>
+
         {% for lead in leads %}
            {{forloop.counter}}) <a href="{% url 'leads:detail' lead.id %} "> {{lead.first_name}} </a> <br>
             <a href="{% url 'leads:update' lead.id %}">Edit</a>
@@ -11,6 +12,17 @@
             <br><br>
         {% endfor %}
 
+        {% if unassigned_leads.exists %}
+        
+            <h3>Unassigned Leads</h3>
+
+            {% for lead in unassigned_leads %}
+            {{forloop.counter}}) <a href="{% url 'leads:detail' lead.id %} "> {{lead.first_name}} </a> <br>
+                <a href="{% url 'leads:update' lead.id %}">Edit</a>
+                <a href="{% url 'leads:delete' lead.id %}">Delete</a>
+                <br><br>
+            {% endfor %}
+        {% endif %}
         <a href="/leads/create">Create New Leads</a>
 
 
