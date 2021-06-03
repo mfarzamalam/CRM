@@ -19,7 +19,8 @@
             {% for lead in unassigned_leads %}
             {{forloop.counter}}) <a href="{% url 'leads:detail' lead.id %} "> {{lead.first_name}} </a> <br>
                 <a href="{% url 'leads:update' lead.id %}">Edit</a>
-                <a href="{% url 'leads:delete' lead.id %}">Delete</a>
+                <a href="{% url 'leads:delete' lead.id %}">Delete</a><br>
+                (<a style="color:red;" href="{% url 'leads:assign_agent' lead.id %}">Assign an agent</a>)
                 <br><br>
             {% endfor %}
         {% endif %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect, reverse
 from .models import Lead, User, Agent
-from .forms import LeadForm, CustomUserCreationForm
-from django.views.generic import TemplateView, CreateView
+from .forms import LeadForm, CustomUserCreationForm, AssignAgentForm
+from django.views.generic import TemplateView, CreateView, FormView
 from agents.mixin import OrganisorAndLoginRequiredMixin
 ################################
 def lead_list(request):
@@ -39,9 +39,10 @@ def create_lead(request):
                 first_name = form.cleaned_data['first_name']
                 last_name = form.cleaned_data['last_name']
                 age = form.cleaned_data['age']
-                agent = Agent.objects.first()
+
                 organisation = request.user.userprofile
-                Lead.objects.create(first_name=first_name, last_name=last_name, age=age, agent=agent, organisation=organisation)
+                
+                Lead.objects.create(first_name=first_name, last_name=last_name, age=age, organisation=organisation)
                 return redirect('leads:list')
         else:
             form = LeadForm()
@@ -92,3 +93,25 @@ class SignupView(CreateView):
 
     def get_success_url(self):
         return reverse('login')
+
+class AssignAgentView(OrganisorAndLoginRequiredMixin, FormView):
+    template_name = 'leads/lead_assign.html'
+    form_class    = AssignAgentForm
+    
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super().get_form_kwargs(**kwargs)
+        kwargs.update({
+            'request':self.request
+        })
+        return kwargs
+
+    def form_valid(self, form):
+        agent = form.cleaned_data['agent']
+        lead  = Lead.objects.get(id=self.kwargs['pk'])
+        print(lead, agent)
+        lead.agent = agent
+        lead.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('leads:list')

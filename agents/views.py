@@ -1,13 +1,13 @@
 import random
 from django.shortcuts import render, reverse
-from django.views.generic import DetailView, ListView, UpdateView, DeleteView, CreateView
+from django.views import generic
 from leads.models import Agent
 from .forms import AgentModelForm
 from .mixin import OrganisorAndLoginRequiredMixin
 
 
 # Create your views here.
-class AgentListView(OrganisorAndLoginRequiredMixin, ListView):
+class AgentListView(OrganisorAndLoginRequiredMixin, generic.ListView):
     # queryset            = Agent.objects.all()
     context_object_name = "agents"
     template_name       = 'agents/agent_list.html'
@@ -17,7 +17,7 @@ class AgentListView(OrganisorAndLoginRequiredMixin, ListView):
         return Agent.objects.filter(organisation=organisation)
 
 
-class AgentCreateView(OrganisorAndLoginRequiredMixin, CreateView):
+class AgentCreateView(OrganisorAndLoginRequiredMixin, generic.CreateView):
     form_class    = AgentModelForm
     template_name = 'agents/agent_create.html'
 
@@ -35,13 +35,13 @@ class AgentCreateView(OrganisorAndLoginRequiredMixin, CreateView):
         return super(AgentCreateView, self).form_valid(form)
 
 
-class AgentDetailView(OrganisorAndLoginRequiredMixin, DetailView):
+class AgentDetailView(OrganisorAndLoginRequiredMixin, generic.DetailView):
     queryset            = Agent.objects.all()
     context_object_name = "agent"
     template_name       = 'agents/agent_detail.html'
 
 
-class AgentUpdateView(OrganisorAndLoginRequiredMixin, UpdateView):
+class AgentUpdateView(OrganisorAndLoginRequiredMixin, generic.UpdateView):
     form_class    = AgentModelForm
     queryset      = Agent.objects.all()
     template_name = 'agents/agent_update.html'
@@ -50,7 +50,7 @@ class AgentUpdateView(OrganisorAndLoginRequiredMixin, UpdateView):
         return reverse('agents:list')
 
 
-class AgentDeleteView(OrganisorAndLoginRequiredMixin, DeleteView):
+class AgentDeleteView(OrganisorAndLoginRequiredMixin, generic.DeleteView):
     queryset      = Agent.objects.all()
     template_name = 'agents/agent_delete.html'
 
